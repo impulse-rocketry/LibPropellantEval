@@ -24,8 +24,23 @@
 
 namespace ImpulseRocketry.LibPropellantEval;
 
+/// <summary>
+/// Exit condition to evaluate for
+/// </summary>
 public enum ExitCondition {
+
+  /// <summary>
+  /// Subsonic area ratio
+  /// </summary>
   SUBSONIC_AREA_RATIO,
+
+  /// <summary>
+  /// Supersonic area ratio
+  /// </summary>
   SUPERSONIC_AREA_RATIO,
+
+  /// <summary>
+  /// Pressure
+  /// </summary>
   PRESSURE
 }

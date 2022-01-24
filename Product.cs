@@ -34,20 +34,59 @@ namespace ImpulseRocketry.LibPropellantEval;
 /// DATE: February 13, 2000
 /// </summary>
 public class Product {
-    public bool ElementListed;                 // true if element have been listed
-    public bool ProductListed;                 // true if product have been listed
-    public bool IsEquilibrium;                 // true if equilibrium is ok
+    /// <summary>
+    /// true if element have been listed
+    /// </summary>
+    public bool ElementListed;
 
-    // coefficient matrix for the gases
+    /// <summary>
+    /// true if product have been listed
+    /// </summary>
+    public bool ProductListed;
+
+    /// <summary>
+    /// true if equilibrium is ok
+    /// </summary>
+    public bool IsEquilibrium;
+
+    /// <summary>
+    /// coefficient matrix for the gases
+    /// </summary>
     public int[][] A = Utils.Make2DArray<int>(Constants.MAX_ELEMENT, Constants.MAX_PRODUCT);
 
-    public int NumElements;                                                     // Number of different element
-    public int[] Elements = new int[Constants.MAX_ELEMENT];                     // Element list
-    public int[] NumSpecies = new int[Constants.STATE_LAST];                    // Number of species for each state
-    public int NumCondensed;                                                    // Number of total possible condensed
-    public int[][] Species = Utils.Make2DArray<int>(Constants.STATE_LAST, Constants.MAX_PRODUCT);       // Possible species in each state
-    public double[][] Coef = Utils.Make2DArray<double>(Constants.STATE_LAST, Constants.MAX_PRODUCT);    // Coefficients of each molecule
+    /// <summary>
+    /// Number of different elements
+    /// </summary>
+    public int NumElements;
 
+    /// <summary>
+    /// Element list
+    /// </summary>
+    public int[] Elements = new int[Constants.MAX_ELEMENT];
+
+    /// <summary>
+    /// Number of species for each state
+    /// </summary>
+    public int[] NumSpecies = new int[Constants.STATE_LAST];
+
+    /// <summary>
+    /// Number of total possible condensed
+    /// </summary>
+    public int NumCondensed;
+
+    /// <summary>
+    /// Possible species in each state
+    /// </summary>
+    public int[][] Species = Utils.Make2DArray<int>(Constants.STATE_LAST, Constants.MAX_PRODUCT);
+
+    /// <summary>
+    /// Coefficients of each molecule
+    /// </summary>
+    public double[][] Coef = Utils.Make2DArray<double>(Constants.STATE_LAST, Constants.MAX_PRODUCT);
+
+    /// <summary>
+    /// Creates a copy of this object
+    /// </summary>
     public Product Clone() {
         return new Product {
             ElementListed = ElementListed,

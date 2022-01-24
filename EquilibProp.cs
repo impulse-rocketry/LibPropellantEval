@@ -30,20 +30,74 @@ namespace ImpulseRocketry.LibPropellantEval;
 /// June 14, 2000
 /// </summary>
 public class EquilibriumProperties {
-    public double P;    // Pressure (atm)
-    public double T;    // Temperature (K)
-    public double H;    // Enthalpy (kJ/kg)
-    public double U;    // Internal energy (kJ/kg)
-    public double G;    // Gibbs free energy (kJ/kg)
-    public double S;    // Entropy (kJ/(kg)(K))
-    public double M;    // Molar mass (g/mol)
-    public double dV_P; // (d ln(V) / d ln(P))t
-    public double dV_T; // (d ln(V) / d ln(T))p
-    public double Cp;   // Specific heat (kJ/(kg)(K))
-    public double Cv;   // Specific heat (kJ/(kg)(K))
-    public double Isex; // Isentropic exponent (gamma)
-    public double Vson; // Sound speed (m/s)
+    /// <summary>
+    /// Pressure (atm)
+    /// </summary>
+    public double P;
 
+    /// <summary>
+    /// Temperature (K)
+    /// </summary>
+    public double T;
+
+    /// <summary>
+    /// Enthalpy (kJ/kg)
+    /// </summary>
+    public double H;
+
+    /// <summary>
+    /// Internal energy (kJ/kg)
+    /// </summary>
+    public double U;
+
+    /// <summary>
+    /// Gibbs free energy (kJ/kg)
+    /// </summary>
+    public double G;
+
+    /// <summary>
+    /// Entropy (kJ/(kg)(K))
+    /// </summary>
+    public double S;
+
+    /// <summary>
+    /// Molar mass (g/mol)
+    /// </summary>
+    public double M;
+
+    /// <summary>
+    /// (d ln(V) / d ln(P))t
+    /// </summary>
+    public double dV_P;
+
+    /// <summary>
+    /// (d ln(V) / d ln(T))p
+    /// </summary>
+    public double dV_T;
+
+    /// <summary>
+    /// Specific heat (kJ/(kg)(K))
+    /// </summary>
+    public double Cp;
+
+    /// <summary>
+    /// Specific heat (kJ/(kg)(K))
+    /// </summary>
+    public double Cv;
+
+    /// <summary>
+    /// Isentropic exponent (gamma)
+    /// </summary>
+    public double Isex;
+
+    /// <summary>
+    /// Sound speed (m/s)
+    /// </summary>
+    public double Vson;
+
+    /// <summary>
+    /// Returns a copy of this object
+    /// </summary>
     public EquilibriumProperties Clone() {
         return (EquilibriumProperties)MemberwiseClone();
     }

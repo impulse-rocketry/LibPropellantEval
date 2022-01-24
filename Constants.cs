@@ -24,6 +24,9 @@
 
 namespace ImpulseRocketry.LibPropellantEval;
 
+/// <summary>
+/// Constants
+/// </summary>
 public class Constants {
 
     internal const int MAX_PRODUCT = 400; // Maximum species in product
@@ -31,10 +34,15 @@ public class Constants {
     internal const int MAX_COMP = 20;     // Maximum different ingredient in composition
 
     /// <summary>
-    /// Enumeration of the possible state of a substance
+    /// Gas substance state
     /// </summary>
     public const int GAS = 0;
+
+    /// <summary>
+    /// Condenses substance state
+    /// </summary>
     public const int CONDENSED = 1;
+
     internal const int STATE_LAST = 2;
 
     // Molar gaz constant in J/(mol K)

@@ -24,7 +24,13 @@
 
 namespace ImpulseRocketry.LibPropellantEval;
 
+/// <summary>
+/// Utility functions
+/// </summary>
 public static class Utils {
+    /// <summary>
+    /// Create an array of arrays of type T.
+    /// </summary>
     public static T[][] Make2DArray<T>(int d1, int d2) {
         var result = new T[d1][];
 

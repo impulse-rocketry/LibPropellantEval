@@ -33,13 +33,39 @@ namespace ImpulseRocketry.LibPropellantEval;
 /// It is in reality Isp/g where g is the earth acceleration.
 /// </summary>
 public class PerformanceProperties {
-    public double AeAt;   // Exit area / Throat area
-    public double ADotm;  // Exit area / mass flow rate (m/s/atm)
-    public double Cstar;   // Characteristic velocity
-    public double Cf;      // Coefficient of thrust
-    public double Ivac;    // Specific impulse (vacuum)
-    public double Isp;     // Specific impulse
+    /// <summary>
+    /// Exit area / Throat area
+    /// </summary>
+    public double AeAt;
 
+    /// <summary>
+    /// Exit area / mass flow rate (m/s/atm)
+    /// </summary>
+    public double ADotm;
+
+    /// <summary>
+    /// Characteristic velocity
+    /// </summary>
+    public double Cstar;
+
+    /// <summary>
+    /// Coefficient of thrust
+    /// </summary>
+    public double Cf;
+
+    /// <summary>
+    /// Specific impulse (vacuum)
+    /// </summary>
+    public double Ivac;
+
+    /// <summary>
+    /// Specific impulse
+    /// </summary>
+    public double Isp;
+
+    /// <summary>
+    /// Returns a copy of this object
+    /// </summary>
     public PerformanceProperties Clone() {
         return (PerformanceProperties)MemberwiseClone();
     }

@@ -32,6 +32,9 @@ public partial class Evaluator {
         "EXIT" 
     };
 
+    /// <summary>
+    /// Prints the condensed product
+    /// </summary>
     public void PrintCondensed(Product p) {
         for (var i = 0; i < p.NumSpecies[Constants.CONDENSED]; i++) {
             Console.Write($"{ThermoList[p.Species[Constants.CONDENSED][i]].Name} ");
@@ -40,7 +43,10 @@ public partial class Evaluator {
         Console.WriteLine();
     }
 
-    public void PrintGazeous(Product p) {
+    /// <summary>
+    /// Prints the gaseous product
+    /// </summary>
+    public void PrintGaseous(Product p) {
         for (var i = 0; i < p.NumSpecies[Constants.GAS]; i++) {
             Console.Write($"{ThermoList[p.Species[Constants.GAS][i]].Name} ");
         }
@@ -48,6 +54,9 @@ public partial class Evaluator {
         Console.WriteLine();
     }
 
+    /// <summary>
+    /// Prints the composition of the product
+    /// </summary>
     public void PrintProductComposition(params Equilibrium[] e) {
         var npt = e.Length;
 
@@ -134,6 +143,9 @@ public partial class Evaluator {
         Console.WriteLine();
     }
 
+    /// <summary>
+    /// Prints the composition of the propellant
+    /// </summary>
     public int PrintPropellantComposition(Equilibrium e) {
         int i, j;
 
@@ -174,7 +186,7 @@ public partial class Evaluator {
             Console.WriteLine($"{e.Product.NumSpecies[Constants.GAS]} possible gazeous species");
 
             if (_verbose > 1) {
-                PrintGazeous(e.Product);
+                PrintGaseous(e.Product);
             }
 
             Console.WriteLine($"{e.Product.NumCondensed} possible condensed species");
@@ -188,6 +200,9 @@ public partial class Evaluator {
         return 0;
     }
 
+    /// <summary>
+    /// Prints the performance information
+    /// </summary>
     public static void PrintPerformanceInformation(Equilibrium[] e, short npt) {
         short i;
 
@@ -234,6 +249,9 @@ public partial class Evaluator {
         Console.WriteLine();
     }
 
+    /// <summary>
+    /// Prints the properties of the product
+    /// </summary>
     public static void PrintProductProperties(params Equilibrium[] e) {
         var npt = e.Length;
 

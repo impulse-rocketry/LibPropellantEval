@@ -24,26 +24,68 @@
 
 namespace ImpulseRocketry.LibPropellantEval;
 
+/// <summary>
+/// Equilibrium properties
+/// </summary>
 public class Equilibrium {
-    public bool EquilibriumOk;  // true if the equilibrium have been compute
-    public bool PropertiesOk;   // true if the properties have been compute
-    public bool PerformanceOk;  // true if the performance have been compute
 
-    //temporarily
+    /// <summary>
+    /// true if the equilibrium have been computed
+    /// </summary>
+    public bool EquilibriumOk;  
+
+    /// <summary>
+    /// true if the properties have been computed
+    /// </summary>
+    public bool PropertiesOk;
+
+    /// <summary>
+    /// true if the performance have been computed
+    /// </summary>
+    public bool PerformanceOk;
+
+    /// <summary>
+    /// The entropy
+    /// </summary>
     public double Entropy;
 
+    /// <summary>
+    /// Holds information during the iteration procedure
+    /// </summary>
     public IterationInfo IterationInfo = new();
+
+    /// <summary>
+    /// The composition of the propellants
+    /// </summary>
     public Composition Propellant = new();
+
+    /// <summary>
+    /// The composition of the combustion product.
+    /// </summary>
     public Product Product = new();
+
+    /// <summary>
+    /// Holds information on equilibrium properties once it has been computed
+    /// </summary>
     public EquilibriumProperties Properties = new();
+
+    /// <summary>
+    /// Holds the performance properties
+    /// </summary>
     public PerformanceProperties Performance = new();
 
+    /// <summary>
+    /// Returns the products molar mass
+    /// </summary>
     public double ProductMolarMass {
         get {
             return 1 / IterationInfo.N;
         }
     }
 
+    /// <summary>
+    /// Returns a copy of this object
+    /// </summary>
     public void CopyTo(Equilibrium dest) {
         dest.Entropy = Entropy;
         dest.EquilibriumOk = EquilibriumOk;
@@ -56,6 +98,9 @@ public class Equilibrium {
         dest.PropertiesOk = PropertiesOk;
     }
 
+    /// <summary>
+    /// Resets the items in the list of elements
+    /// </summary>
     public void ResetElementList() {
         for (var i = 0; i < Constants.MAX_ELEMENT; i++) {
             Product.Elements[i] = -1;
@@ -67,7 +112,6 @@ public class Equilibrium {
     /// 
     /// AUTHOR:    Antoine Lefebvre
     /// </summary>
-    /// <param name="e">The equilibrium structure</param>
     /// <param name="sp">The number of the molecule in the list</param>
     /// <param name="mol">Quantity in mol</param>
     public void AddInPropellant(int sp, double mol) {

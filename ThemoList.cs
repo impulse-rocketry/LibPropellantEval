@@ -28,37 +28,112 @@ namespace ImpulseRocketry.LibPropellantEval;
 /// Structure to hold information of species contain in the thermo data file
 /// </summary>
 public class ThermoListItem {
+    /// <summary>
+    /// Name
+    /// </summary>
     public string? Name;
-    public string? Comments;
-    public int NumIntervals;            // Number of different temperature interval
-    public string? Id;                  // Identification code
-    public int[] Elem = new int[5];
-    public int[] Coef = new int[5];
-    public int State;
-    public double Weight;               // Molecular weight
-    public float Heat;                  // Heat of formation at 298.15 K  (J/mol)
-    public double Dho;                  // HO(298.15) - HO(0)
-    public float[][] Range = Utils.Make2DArray<float>(5, 2);    // Temperature range
-    public int[] NumCoef = new int[5];    // Number of coefficient for Cp0/R
-    public int[][] Ex = Utils.Make2DArray<int>(5, 8);           // Exponent in empirical equation
 
+    /// <summary>
+    /// Comments
+    /// </summary>
+    public string? Comments;
+
+    /// <summary>
+    /// Number of different temperature interval
+    /// </summary>
+    public int NumIntervals;
+
+    /// <summary>
+    /// Identification code
+    /// </summary>
+    public string? Id;
+
+    /// <summary>
+    /// Elements
+    /// </summary>
+    public int[] Elem = new int[5];
+
+    /// <summary>
+    /// Coeficients
+    /// </summary>
+    public int[] Coef = new int[5];
+
+    /// <summary>
+    /// State
+    /// </summary>
+    public int State;
+
+    /// <summary>
+    /// Molecular weight
+    /// </summary>
+    public double Weight;
+
+    /// <summary>
+    /// Heat of formation at 298.15 K  (J/mol)
+    /// </summary>
+    public float Heat;
+
+    /// <summary>
+    /// HO(298.15) - HO(0)
+    /// </summary>
+    public double Dho;
+
+    /// <summary>
+    /// Temperature range
+    /// </summary>
+    public float[][] Range = Utils.Make2DArray<float>(5, 2);
+
+    /// <summary>
+    /// Number of coefficient for Cp0/R
+    /// </summary>
+    public int[] NumCoef = new int[5];
+
+    /// <summary>
+    /// Exponent in empirical equation
+    /// </summary>
+    public int[][] Ex = Utils.Make2DArray<int>(5, 8);
+
+    /// <summary>
+    /// Parametric equation for dimentionless enthalpy
+    /// </summary>
     public double[][] Param = Utils.Make2DArray<double>(5, 9);
 
     // For species with data at only one temperature especially condensed
+    /// <summary>
+    /// The temperature of the assigned enthalpy
+    /// </summary>
     public float Temp;
+
+    /// <summary>
+    /// Enthalpy
+    /// </summary>
     public float Enth;
 }
 
+/// <summary>
+/// List of species information
+/// </summary>
 public class ThermoList {
 
     private readonly List<ThermoListItem> _items = new();
 
+    /// <summary>
+    /// Initialises a new instance of the <see name="ThermoList"/> class with the built in thermo data.
+    /// </summary>
     public ThermoList(int verbose) {
         var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         using var resourceStream = assembly.GetManifestResourceStream("ImpulseRocketry.LibPropellantEval.data.thermo.dat");
+        
+        if (resourceStream is null) {
+            throw new ApplicationException("Unable to load thermo data from internal resources.");
+        }
+
         Load(resourceStream, verbose);
     }
 
+    /// <summary>
+    /// Initialises a new instance of the <see name="ThermoList"/> class with thermo data from the specified file.
+    /// </summary>
     public ThermoList(string fileName, int verbose) {
         using var fileStream = File.OpenRead(fileName);
         Load(fileStream, verbose);
@@ -144,7 +219,7 @@ public class ThermoList {
             thermo.NumIntervals = int.Parse(line[..3]);
             thermo.Id = line.Substring(3, 6).Trim();
 
-            // get the chemical formula and coefficient
+            // Get the chemical formula and coefficient
             // grep the elements (5 max)
             for (var k = 0; k < 5; k++) {
                 var tmp2 = line.Substring(k * 8 + 10, 2);
@@ -186,7 +261,7 @@ public class ThermoList {
             var tmp = line.Substring(65, 15);
 
             // now get the data
-            // there is 'thermo_list[i].nint' set of data 
+            // there is '_items[i].nint' set of data 
             if (thermo.NumIntervals == 0) {
                 // Set the enthalpy
                 thermo.Enth = int.Parse(tmp);
@@ -224,15 +299,15 @@ public class ThermoList {
                         throw new IOException("Unexpected end of file");
                     }
 
-                    // low
+                    // Low
                     thermo.Range[j][0] = (float)double.Parse(line.Substring(1, 10));
 
-                    // high
+                    // High
                     thermo.Range[j][1] = (float)double.Parse(line.Substring(11, 10));
 
                     thermo.NumCoef[j] = int.Parse(line.Substring(22, 1));
 
-                    // grep the exponent
+                    // Grep the exponent
                     for (var l = 0; l < 8; l++) {
                         thermo.Ex[j][l] = (int)double.Parse(line.Substring(l * 5 + 23, 5));
                     }
@@ -247,8 +322,7 @@ public class ThermoList {
                         throw new IOException("Unexpected end of file");
                     }
 
-                    // grep the first data line
-                    // there are 5 coefficients
+                    // Grep the first data line there are 5 coefficients
                     for (var l = 0; l < 5; l++) {
                         thermo.Param[j][l] = double.Parse(line.Substring(l * 16, 16));
                     }
@@ -260,7 +334,7 @@ public class ThermoList {
                         throw new IOException("Unexpected end of file");
                     }
 
-                    // grep the second data line
+                    // Grep the second data line
                     for (var l = 0; l < 2; l++) {
                         thermo.Param[j][l + 5] = double.Parse(line.Substring(l * 16, 16));
                     }
@@ -279,24 +353,36 @@ public class ThermoList {
         }
     }
 
+    /// <summary>
+    /// Gets the <see cref="ThermoListItem"/> at the specified index.
+    /// </summary>
     public ThermoListItem this[int index] {
         get {
             return _items[index];
         }
     }
 
+    /// <summary>
+    /// Gets the number of items in the list.
+    /// </summary>
     public int Count {
         get {
             return _items.Count;
         }
     }
 
+    /// <summary>
+    /// Print list of all thermo info.
+    /// </summary>
     public void PrintList() {
         for (var i = 0; i < _items.Count; i++) {
             Console.WriteLine($"{i,-4} {_items[i].Name,-15} {_items[i].Heat,2: 0.00;-0.00}");
         }
     }
 
+    /// <summary>
+    /// Print thermo info for the specifed species.
+    /// </summary>
     public int PrintInfo(int sp) {
         if (sp > _items.Count || sp < 0) {
             return -1;

@@ -91,6 +91,9 @@ public partial class Evaluator {
         return cp;
     }
 
+    /// <summary>
+    /// Calculates the density of the propellant
+    /// </summary>
     public int ComputeDensity(Composition c) {
         double mass = 0;
 

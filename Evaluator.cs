@@ -33,20 +33,35 @@
 
 namespace ImpulseRocketry.LibPropellantEval;
 
+/// <summary>
+/// The evaluator
+/// </summary>
 public partial class Evaluator {
     // 1 for verbose, 0 for non-verbose
     private readonly int _verbose = 10;
 
-    // The information about chemical species
+    /// <summary>
+    /// Gets the propellant list
+    /// </summary>
     public PropellantList PropellantList { get; }
+
+    /// <summary>
+    /// Gets the thermo list
+    /// </summary>
     public ThermoList ThermoList { get; }
 
+    /// <summary>
+    /// Initialises a new instance of the <see ref="Evaluator"/> class with internal propellant and thermo list data
+    /// </summary>
     public Evaluator(int verbose) {
         _verbose = verbose;
         PropellantList = new PropellantList(verbose);
         ThermoList = new ThermoList(verbose);
     }
 
+    /// <summary>
+    /// Initialises a new instance of the <see ref="Evaluator"/> class with the specified propellant and thermo lists
+    /// </summary>
     public Evaluator(PropellantList propellantList, ThermoList thermoList, int verbose) {
         PropellantList = propellantList;
         ThermoList = thermoList;

@@ -28,22 +28,55 @@ namespace ImpulseRocketry.LibPropellantEval;
 /// Structure to hold information of species contain in the propellant data file
 /// </summary>
 public class PropellantListItem {
-    public string? Name;                // name of the propellant
-    public int[] Elem = new int[6];     // element in the molecule (atomic number) max 6
-    public int[] Coef = new int[6];     // stochiometric coefficient of this element (0 for none)
-    public float Heat;                  // heat of formation in Joule/gram
-    public float Density;               // density in g/cubic cm
+    /// <summary>
+    /// Name of the propellant
+    /// </summary>
+    public string? Name;
+
+    /// <summary>
+    /// Element in the molecule (atomic number) max 6
+    /// </summary>
+    public int[] Elem = new int[6];
+
+    /// <summary>
+    /// Stochiometric coefficient of this element (0 for none)
+    /// </summary>
+    public int[] Coef = new int[6];
+
+    /// <summary>
+    /// Heat of formation in Joule/gram
+    /// </summary>
+    public float Heat;
+
+    /// <summary>
+    /// Density in g/cubic cm
+    /// </summary>
+    public float Density;
 }
 
+/// <summary>
+/// List of propellant information
+/// </summary>
 public class PropellantList {
     private readonly List<PropellantListItem> _items = new();
-
+    
+    /// <summary>
+    /// Initialises a new instance of the <see name="PropellantList"/> class with the built in propellant data.
+    /// </summary>
     public PropellantList(int verbose) {
         var assembly = System.Reflection.Assembly.GetExecutingAssembly();
         using var resourceStream = assembly.GetManifestResourceStream("ImpulseRocketry.LibPropellantEval.data.propellant.dat");
+
+        if (resourceStream is null) {
+            throw new ApplicationException("Unable to load propellant data from internal resources.");
+        }
+
         Load(resourceStream, verbose);
     }
 
+    /// <summary>
+    /// Initialises a new instance of the <see name="PropellantList"/> class with propellant data from the specified file.
+    /// </summary>
     public PropellantList(string fileName, int verbose) {
         using var fileStream = File.OpenRead(fileName);
         Load(fileStream, verbose);
@@ -153,21 +186,30 @@ public class PropellantList {
         }
     }
 
+    /// <summary>
+    /// Gets the <see cref="PropellantListItem"/> at the specified index.
+    /// </summary>
     public PropellantListItem this[int index] {
         get {
             return _items[index];
         }
     }
 
+    /// <summary>
+    /// Gets the number of items in the list.
+    /// </summary>
     public int Count {
         get {
             return _items.Count;
         }
     }
 
+    /// <summary>
+    /// Convert grams to moles.
+    /// </summary>
     public double GramToMol(double g, int sp) => g / MolarMass(sp);
 
-    public double MolarMass(int molecule) {
+    internal double MolarMass(int molecule) {
         int i = 0;
         double ans = 0;
 
@@ -184,11 +226,16 @@ public class PropellantList {
         return ans;
     }
 
-    // J/mol
+    /// <summary>
+    /// J/mol
+    /// </summary>
     public double HeatOfFormation(int molecule) {
         return _items[molecule].Heat * MolarMass(molecule);
     }
 
+    /// <summary>
+    /// Search for the propellant with the specified name.
+    /// </summary>
     public int Search(string str) {
         int last = -1;
 
@@ -202,8 +249,10 @@ public class PropellantList {
         return last;
     }
 
-    // Returns the offset of the molecule in the propellant list
-    // the argument is the chemical formula of the molecule
+    /// <summary>
+    /// Returns the offset of the molecule in the propellant list
+    /// the argument is the chemical formula of the molecule
+    /// </summary>    
     public int SearchByFormula(string str) {
         int i = 0, j;
 
@@ -291,12 +340,18 @@ public class PropellantList {
         return molecule;
     }
 
+    /// <summary>
+    /// Print list of all propellant info.
+    /// </summary>
     public void PrintList() {
         for (var i = 0; i < _items.Count; i++) {
             Console.WriteLine($"{i,-4} {_items[i].Name,-30} {_items[i].Heat,5:0.#######}");
         }
     }
 
+    /// <summary>
+    /// Print propellant info for the specifed species.
+    /// </summary>
     public int PrintInfo(int sp) {
         if (sp >= _items.Count || sp < 0) {
             return -1;

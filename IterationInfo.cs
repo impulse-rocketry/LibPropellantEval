@@ -24,16 +24,48 @@
 
 namespace ImpulseRocketry.LibPropellantEval;
 
-// Holds information during the iteration procedure
+/// <summary>
+/// Holds information during the iteration procedure
+/// </summary>
 public class IterationInfo {
-    public double N;                        // mol/g of the mixture
-    public double LnN;                      // ln(n)
-    public double SumN;                     // sum of all the nj
-    public double DeltaLnN;                 // delta ln(n) in the iteration process
-    public double DeltaLnT;                 // delta ln(T) in the iteration process
-    public double[] DeltaLnNj = new double[Constants.MAX_PRODUCT];  // delta ln(nj) in the iteration process
-    public double[] LnNj = new double[Constants.MAX_PRODUCT];       // ln(nj) nj are the individual mol/g
+    /// <summary>
+    /// mol/g of the mixture
+    /// </summary>
+    public double N;
 
+    /// <summary>
+    /// ln(n)
+    /// </summary>
+    public double LnN;
+
+    /// <summary>
+    /// sum of all the nj
+    /// </summary>
+    public double SumN;
+
+    /// <summary>
+    /// delta ln(n) in the iteration process
+    /// </summary>
+    public double DeltaLnN;
+
+    /// <summary>
+    /// delta ln(T) in the iteration process
+    /// </summary>
+    public double DeltaLnT;
+
+    /// <summary>
+    /// delta ln(nj) in the iteration process
+    /// </summary>
+    public double[] DeltaLnNj = new double[Constants.MAX_PRODUCT];
+
+    /// <summary>
+    /// ln(nj) nj are the individual mol/g
+    /// </summary>
+    public double[] LnNj = new double[Constants.MAX_PRODUCT];
+
+    /// <summary>
+    /// Returns a copy of this object
+    /// </summary>
     public IterationInfo Clone() {
         return new IterationInfo{
             N = N,

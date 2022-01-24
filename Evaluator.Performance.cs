@@ -35,9 +35,9 @@ namespace ImpulseRocketry.LibPropellantEval;
 
 public partial class Evaluator {
 
-    public const int TEMP_ITERATION_MAX = 8;
-    public const int PC_PT_ITERATION_MAX = 5;
-    public const int PC_PE_ITERATION_MAX = 6;
+    private const int TEMP_ITERATION_MAX = 8;
+    private const int PC_PT_ITERATION_MAX = 5;
+    private const int PC_PE_ITERATION_MAX = 6;
 
     // Entropy of the product at the exit pressure and temperature
     private double ProductEntropyExit(Equilibrium e, double pressure, double temp) {
@@ -84,6 +84,9 @@ public partial class Evaluator {
         return temperature;
     }
 
+    /// <summary>
+    /// Calculates the frozen performance
+    /// </summary>
     public bool FrozenPerformance(Equilibrium[] es, ExitCondition exit_type, double value) {
         double sound_velocity;
         double flow_velocity;
@@ -289,16 +292,10 @@ public partial class Evaluator {
         return true;
     }
 
-    public bool ShiftingPerformance(Equilibrium[] es, ExitCondition exit_type, double value) {
-        double sound_velocity;
-        double flow_velocity;
-        double pc_pt;
-        double pc_pe;
-        double log_pc_pe;
-        double ae_at;
-        double chamber_entropy;
-        double exit_pressure;
-
+    /// <summary>
+    /// Calculates the shifting performance
+    /// </summary>
+    public bool ShiftingPerformance(Equilibrium[] es, ExitCondition exitType, double value) {
         var e = es[0];
         var t = es[1]; // throat equilibrium
         var ex = es[2]; // throat equilibrium
@@ -316,17 +313,19 @@ public partial class Evaluator {
         // the same as the chamber equilibrium
         e.CopyTo(t);
 
-        chamber_entropy = ProductEntropy(e);
+        double chamberEntropy = ProductEntropy(e);
 
         // Computing throat condition
         // Approximation of the throat pressure
-        pc_pt = Math.Pow(t.Properties.Isex / 2 + 0.5, t.Properties.Isex / (t.Properties.Isex - 1));
+        double pcPt = Math.Pow(t.Properties.Isex / 2 + 0.5, t.Properties.Isex / (t.Properties.Isex - 1));
 
-        t.Entropy = chamber_entropy;
+        t.Entropy = chamberEntropy;
 
         var i = 0;
+        double soundVelocity;
+        double flowVelocity;
         do {
-            t.Properties.P = e.Properties.P / pc_pt;
+            t.Properties.P = e.Properties.P / pcPt;
 
             // We must compute the new equilibrium each time
             if (!Equilibrium(t, ProblemType.SP)) {
@@ -334,28 +333,26 @@ public partial class Evaluator {
                 return false;
             }
 
-            sound_velocity = Math.Sqrt(1000 * t.IterationInfo.N * Constants.R * t.Properties.T * t.Properties.Isex);
+            soundVelocity = Math.Sqrt(1000 * t.IterationInfo.N * Constants.R * t.Properties.T * t.Properties.Isex);
 
-            flow_velocity = Math.Sqrt(2000 * (ProductEnthalpy(e) * Constants.R * e.Properties.T -
+            flowVelocity = Math.Sqrt(2000 * (ProductEnthalpy(e) * Constants.R * e.Properties.T -
                                         ProductEnthalpy(t) * Constants.R * t.Properties.T));
 
-            pc_pt /= (1 + ((Math.Pow(flow_velocity, 2) - Math.Pow(sound_velocity, 2))
+            pcPt /= (1 + ((Math.Pow(flowVelocity, 2) - Math.Pow(soundVelocity, 2))
                     / (1000 * (t.Properties.Isex + 1) * t.IterationInfo.N * Constants.R *
                     t.Properties.T)));
             i++;
-        } while ((Math.Abs((Math.Pow(flow_velocity, 2) - Math.Pow(sound_velocity, 2))
-                        / Math.Pow(flow_velocity, 2)) > 0.4e-4) &&
+        } while ((Math.Abs((Math.Pow(flowVelocity, 2) - Math.Pow(soundVelocity, 2))
+                        / Math.Pow(flowVelocity, 2)) > 0.4e-4) &&
                 (i < PC_PT_ITERATION_MAX));
 
         if (i == PC_PT_ITERATION_MAX) {
             Console.Error.WriteLine($"Throat pressure do not converge in {PC_PT_ITERATION_MAX} iterations. Don't thrust results.");
         }
 
-        //printf("%d iterations to evaluate throat pressure.\n", i);
-
-        t.Properties.P = e.Properties.P / pc_pt;
-        t.Properties.Vson = sound_velocity;
-        t.Performance.Isp = sound_velocity;
+        t.Properties.P = e.Properties.P / pcPt;
+        t.Properties.Vson = soundVelocity;
+        t.Performance.Isp = soundVelocity;
 
         t.Performance.ADotm = 1000 * Constants.R *
             t.Properties.T * t.IterationInfo.N /
@@ -363,28 +360,30 @@ public partial class Evaluator {
 
         e.CopyTo(ex);
 
-        if (exit_type == ExitCondition.PRESSURE) {
-            exit_pressure = value;
+        double exitPressure;
+        if (exitType == ExitCondition.PRESSURE) {
+            exitPressure = value;
         } else {
-            ae_at = value;
+            double aeAt = value;
 
+            double logPcPe;
             // Initial estimate of pressure ratio
-            if (exit_type == ExitCondition.SUPERSONIC_AREA_RATIO) {
-                if ((ae_at > 1.0) && (ae_at < 2.0)) {
-                    log_pc_pe = Math.Log(pc_pt) + Math.Sqrt(3.294 * Math.Pow(ae_at, 2) + 1.535 * Math.Log(ae_at));
-                } else if (ae_at >= 2.0) {
-                    log_pc_pe = t.Properties.Isex + 1.4 * Math.Log(ae_at);
+            if (exitType == ExitCondition.SUPERSONIC_AREA_RATIO) {
+                if ((aeAt > 1.0) && (aeAt < 2.0)) {
+                    logPcPe = Math.Log(pcPt) + Math.Sqrt(3.294 * Math.Pow(aeAt, 2) + 1.535 * Math.Log(aeAt));
+                } else if (aeAt >= 2.0) {
+                    logPcPe = t.Properties.Isex + 1.4 * Math.Log(aeAt);
                 } else {
                     Console.WriteLine("Aera ratio out of range ( < 1.0 )");
                     return true;
                 }
-            } else if (exit_type == ExitCondition.SUBSONIC_AREA_RATIO) {
-                if ((ae_at > 1.0) && (ae_at < 1.09)) {
-                    log_pc_pe = 0.9 * Math.Log(pc_pt) /
-                    (ae_at + 10.587 * Math.Pow(Math.Log(ae_at), 3) + 9.454 * Math.Log(ae_at));
-                } else if (ae_at >= 1.09) {
-                    log_pc_pe = Math.Log(pc_pt) /
-                    (ae_at + 10.587 * Math.Pow(Math.Log(ae_at), 3) + 9.454 * Math.Log(ae_at));
+            } else if (exitType == ExitCondition.SUBSONIC_AREA_RATIO) {
+                if ((aeAt > 1.0) && (aeAt < 1.09)) {
+                    logPcPe = 0.9 * Math.Log(pcPt) /
+                    (aeAt + 10.587 * Math.Pow(Math.Log(aeAt), 3) + 9.454 * Math.Log(aeAt));
+                } else if (aeAt >= 1.09) {
+                    logPcPe = Math.Log(pcPt) /
+                    (aeAt + 10.587 * Math.Pow(Math.Log(aeAt), 3) + 9.454 * Math.Log(aeAt));
                 } else {
                     Console.WriteLine("Aera ratio out of range ( < 1.0 )");
                     return true;
@@ -394,12 +393,13 @@ public partial class Evaluator {
             }
 
             // Improved the estimate
-            ex.Entropy = chamber_entropy;
+            ex.Entropy = chamberEntropy;
             i = 0;
+            double pcPe;
             do {
-                pc_pe = Math.Exp(log_pc_pe);
-                exit_pressure = e.Properties.P / pc_pe;
-                ex.Properties.P = exit_pressure;
+                pcPe = Math.Exp(logPcPe);
+                exitPressure = e.Properties.P / pcPe;
+                ex.Properties.P = exitPressure;
 
                 // Find the exit equilibrium
                 if (!Equilibrium(ex, ProblemType.SP)) {
@@ -407,36 +407,34 @@ public partial class Evaluator {
                     return false;
                 }
 
-                sound_velocity = ex.Properties.Vson;
+                soundVelocity = ex.Properties.Vson;
 
                 ex.Performance.Isp =
-                    flow_velocity = Math.Sqrt(2000 * (ProductEnthalpy(e) * Constants.R * e.Properties.T -
+                    flowVelocity = Math.Sqrt(2000 * (ProductEnthalpy(e) * Constants.R * e.Properties.T -
                                             ProductEnthalpy(ex) * Constants.R * ex.Properties.T));
 
                 ex.Performance.AeAt =
                     (ex.Properties.T * t.Properties.P * t.Performance.Isp) /
                     (t.Properties.T * ex.Properties.P * ex.Performance.Isp);
 
-                log_pc_pe += 
-                    (ex.Properties.Isex * Math.Pow(flow_velocity, 2) /
-                    (Math.Pow(flow_velocity, 2) - Math.Pow(sound_velocity, 2))) *
-                    (Math.Log(ae_at) - Math.Log(ex.Performance.AeAt));
+                logPcPe +=
+                    (ex.Properties.Isex * Math.Pow(flowVelocity, 2) /
+                    (Math.Pow(flowVelocity, 2) - Math.Pow(soundVelocity, 2))) *
+                    (Math.Log(aeAt) - Math.Log(ex.Performance.AeAt));
                 i++;
-            } while ((Math.Abs((log_pc_pe - Math.Log(pc_pe))) > 0.00004) &&
+            } while ((Math.Abs((logPcPe - Math.Log(pcPe))) > 0.00004) &&
                     (i < PC_PE_ITERATION_MAX));
 
             if (i == PC_PE_ITERATION_MAX) {
                 Console.Error.WriteLine($"Exit pressure do not converge in {PC_PE_ITERATION_MAX} iteration. Don't thrust results.");
             }
 
-            //printf("%d iterations to evaluate exit pressure.\n", i);
-
-            pc_pe = Math.Exp(log_pc_pe);
-            exit_pressure = e.Properties.P / pc_pe;
+            pcPe = Math.Exp(logPcPe);
+            exitPressure = e.Properties.P / pcPe;
         }
 
-        ex.Entropy = chamber_entropy;
-        ex.Properties.P = exit_pressure;
+        ex.Entropy = chamberEntropy;
+        ex.Properties.P = exitPressure;
 
         // Find the exit equilibrium
         if (!Equilibrium(ex, ProblemType.SP)) {
@@ -444,10 +442,10 @@ public partial class Evaluator {
             return false;
         }
 
-        flow_velocity = Math.Sqrt(2000 * (ProductEnthalpy(e) * Constants.R * e.Properties.T -
+        flowVelocity = Math.Sqrt(2000 * (ProductEnthalpy(e) * Constants.R * e.Properties.T -
                                     ProductEnthalpy(ex) * Constants.R * ex.Properties.T));
 
-        ex.Performance.Isp = flow_velocity;
+        ex.Performance.Isp = flowVelocity;
 
         ex.Performance.ADotm = 1000 * Constants.R *
             ex.Properties.T * ex.IterationInfo.N /

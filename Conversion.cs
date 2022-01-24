@@ -24,43 +24,102 @@
 
 namespace ImpulseRocketry.LibPropellantEval;
 
+/// <summary>
+/// Unit conversion
+/// </summary>
 public static class Conversion {
-    // Transform calories to joules
+    /// <summary>
+    /// Transform calories to joules
+    /// </summary>
     public const double CAL_TO_JOULE = 4.1868;
 
-    // Transform pound/(cubic inch) to gram/(cubic centimeter)
+    /// <summary>
+    /// Transform pound/(cubic inch) to gram/(cubic centimeter)
+    /// </summary>
     public const double LBS_IN3_TO_G_CM3 = 27.679905;
 
-    // Transform different pressure units
+    /// <summary>
+    /// Pressure Unit - Standard atmosphere to Pascal
+    /// </summary>
     public const double ATM_TO_PA = 101325.0;
+
+    /// <summary>
+    /// Pressure Unit - Standard atmosphere to Pounds per square inch
+    /// </summary>
     public const double ATM_TO_PSI = 14.695949;
+
+    /// <summary>
+    /// Pressure Unit - Standard atmosphere to Bar
+    /// </summary>
     public const double ATM_TO_BAR = 1.01325;
 
+    /// <summary>
+    /// Pressure Unit - Bar to Pounds per square inch
+    /// </summary>
     public const double BAR_TO_PSI = 14.503774;
 
+    /// <summary>
+    /// Pressure Unit - Bar to Standard atmosphere
+    /// </summary>
     public const double BAR_TO_ATM = 0.98692327;
+
+    /// <summary>
+    /// Pressure Unit - Pounds per square inch to Standard atmosphere
+    /// </summary>
     public const double PSI_TO_ATM = 0.068045964;
+
+    /// <summary>
+    /// Pressure Unit - Kilopascal to Standard atmosphere
+    /// </summary>
     public const double KPA_TO_ATM = 0.0098692327;
 
-    // Length
+    /// <summary>
+    /// Length - Meters to Centimeters
+    /// </summary>
     public const double M_TO_CM = 100.0;
+
+    /// <summary>
+    /// Length - Meters to Inches
+    /// </summary>
     public const double M_TO_IN = 39.370079;
+
+    /// <summary>
+    /// Length - Inches to Meters
+    /// </summary>
     public const double IN_TO_M = 0.0254;
 
-    // Surface
+    /// <summary>
+    /// Surface - Square meters to Square centimeters
+    /// </summary>
     public const double M2_TO_CM2 = 10000.0;
+
+    /// <summary>
+    /// Surface - Square meters to square inches
+    /// </summary>
     public const double M2_TO_IN2 = 1550.0031;
 
-    // Volume
+    /// <summary>
+    /// Volume - Cubic meters to cubic centimeters
+    /// </summary>
     public const double M3_TO_CM3 = 1000000.0;
+
+    /// <summary>
+    /// Volume - Cubic meters to cubic inches
+    /// </summary>
     public const double M3_TO_IN3 = 61023.744;
 
-    // Mass flow
+    /// <summary>
+    /// Mass flow - Kilograms/second to Pounds/second
+    /// </summary>
     public const double KG_S_TO_LB_S = 2.2046226;
 
-    // Force
-
-    // Mewton to pound-force
+    /// <summary>
+    /// Force - Newtons to Pound-force
+    /// </summary>
     public const double N_TO_LBF = 0.22480894;
+
+    /// <summary>
+    /// Force - Pound-force to Newtons
+    /// </summary>
     public const double LBF_TO_N = 4.4482216;
 }

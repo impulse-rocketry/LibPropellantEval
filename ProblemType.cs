@@ -24,8 +24,22 @@
 
 namespace ImpulseRocketry.LibPropellantEval;
 
+/// <summary>
+/// Possible problem types for the evaluator
+/// </summary>
 public enum ProblemType {
-    TP,          // assign temperature and pressure
-    HP,          // assign enthalpy and pressure
-    SP           // assign entropy and pressure
+    /// <summary>
+    /// assign temperature and pressure
+    /// </summary>
+    TP,          
+
+    /// <summary>
+    /// assign enthalpy and pressure
+    /// </summary>
+    HP,          
+
+    /// <summary>
+    /// assign entropy and pressure
+    /// </summary>
+    SP
 }

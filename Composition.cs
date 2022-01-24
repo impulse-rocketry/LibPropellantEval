@@ -44,22 +44,22 @@ public class Composition {
 
     /// <summary>
     /// Molecule codes
-    /// </summary
+    /// </summary>
     public int[] Molecule = new int[Constants.MAX_COMP];
 
     /// <summary>
     /// Moles of molecule
-    /// </summary
+    /// </summary>
     public double[] Coef = new double[Constants.MAX_COMP];
 
     /// <summary>
     /// Density of propellant
-    /// </summary
+    /// </summary>
     public double Density;
 
     /// <summary>
     /// Returns a copy of this object
-    /// </summary
+    /// </summary>
     public Composition Clone() {
         return (Composition)MemberwiseClone();
     }
