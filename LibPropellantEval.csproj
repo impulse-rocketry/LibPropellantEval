@@ -13,14 +13,14 @@
     <VersionSuffix>rc1</VersionSuffix>
     <Title>LibPropellantEval</Title>
     <Product>LibPropellantEval</Product>
-    <Authors>Antoine Lefebvre, Ben Voß</Authors>
+    <Authors>Antoine Lefebvre, Mark Pinese, Ben Voß</Authors>
     <RepositoryUrl>https://github.com/impulse-rocketry/LibPropellantEval</RepositoryUrl>
     <RespositoryType>git</RespositoryType>
     <PackageIcon>Icon.png</PackageIcon>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Summary>Library of numerical methods</Summary>
-    <Description>Library of numerical methods</Description>
-    <PackageDescription>Library of numerical methods</PackageDescription>
+    <Summary>Library for computing thermodynamic properties of individual species and composition of species</Summary>
+    <Description>Library for computing thermodynamic properties of individual species and composition of species</Description>
+    <PackageDescription>Library for computing thermodynamic properties of individual species and composition of species</PackageDescription>
     <Copyright>Copyright © 2000 Antoine Lefebvre, Mark Pinese. Copyright © 2022 Ben Voß</Copyright>
     <Company>ImpulseRocketry</Company>
     <PackageReadmeFile>README.md</PackageReadmeFile>
