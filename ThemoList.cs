@@ -421,14 +421,14 @@ public class ThermoList {
         }
 
         Console.WriteLine();
-        Console.WriteLine($"Molecular weight: \t\t{s.Weight:0.000000} g/mol");
-        Console.WriteLine($"Heat of formation at 298.15 K : {s.Heat:0.000000} J/mol");
-        Console.WriteLine($"Assign enthalpy               : {s.Enth:0.000000} J/mol");
-        Console.WriteLine($"HO(298.15) - HO(0): \t\t{s.Dho:0.000000} J/mol");
-        Console.WriteLine($"Number of temperature range: {s.NumIntervals}\n");
+        Console.WriteLine($"Molecular weight: \t\t{s.Weight: 0.000000} g/mol");
+        Console.WriteLine($"Heat of formation at 298.15 K : {s.Heat: 0.000000;-0.000000} J/mol");
+        Console.WriteLine($"Assign enthalpy               : {s.Enth: 0.000000;-0.000000} J/mol");
+        Console.WriteLine($"HO(298.15) - HO(0): \t\t{s.Dho: 0.000000;-0.000000} J/mol");
+        Console.WriteLine($"Number of temperature range:  {s.NumIntervals}\n");
 
         for (var i = 0; i < s.NumIntervals; i++) {
-            Console.WriteLine($"Interval: {s.Range[i][0]:0.000000} - {s.Range[i][1]:0.000000}");
+            Console.WriteLine($"Interval: {s.Range[i][0]: 0.000000;-0.000000} - {s.Range[i][1]: 0.000000;-0.000000}");
             for (var j = 0; j < 9; j++) {
                 Console.Write($"{s.Param[i][j]: 0.000000000e+00;-0.000000000e+00} ");
             }

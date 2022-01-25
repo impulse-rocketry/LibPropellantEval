@@ -358,7 +358,7 @@ public class PropellantList {
         }
 
         Console.WriteLine($"Code {"Name",-35} Enthalpy  Density  Composition", "Name");
-        Console.Write($"{sp}  {_items[sp].Name,-35} {_items[sp].Heat,-4:0.####}  {_items[sp].Density,-2:0.##}");
+        Console.Write($"{sp}  {_items[sp].Name,-35} {_items[sp].Heat,-4: 0.0000;-0.0000}  {_items[sp].Density,-2: 0.00;-0.00}");
         Console.Write("  ");
 
         // Print the composition
