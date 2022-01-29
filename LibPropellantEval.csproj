@@ -7,10 +7,10 @@
     <PackageLicenseExpression>GPL-2.0-only</PackageLicenseExpression>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>ImpulseRocketry.LibPropellantEval</PackageId>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
-    <VersionPrefix>1.0.0</VersionPrefix>
-    <VersionSuffix>rc2</VersionSuffix>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
+    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionSuffix>rc1</VersionSuffix>
     <Title>LibPropellantEval</Title>
     <Product>LibPropellantEval</Product>
     <Authors>Antoine Lefebvre, Mark Pinese, Ben Voß</Authors>

@@ -48,8 +48,10 @@ public class Constants {
     // Molar gaz constant in J/(mol K)
     internal const double R = 8.31451;
 
-    // Earth gravitational acceleration
-    internal const double Ge = 9.80665;
+    /// <summary>
+    /// Earth gravitational acceleration
+    /// </summary>
+    public const double Ge = 9.80665;
 
     /// <summary>
     /// Contains the molar mass of element by atomic number molar_mass[0]
