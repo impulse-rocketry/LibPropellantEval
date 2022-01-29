@@ -496,7 +496,9 @@ public partial class Evaluator {
             matrix[idx_n][i + idx_cond] = 0.0;
         }
 
-        LibNum.MatrixUtils.PrintMatrix(matrix, p.NumElements);
+        if (_verbose > 0) {
+            MatrixUtils.PrintMatrix(matrix, p.NumElements);
+        }
     }
 
     private bool RemoveCondensed(ref int n, Equilibrium e) {
