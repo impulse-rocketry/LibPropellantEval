@@ -10,7 +10,7 @@
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <FileVersion>1.0.1</FileVersion>
     <VersionPrefix>1.0.1</VersionPrefix>
-    <VersionSuffix>rc1</VersionSuffix>
+    <VersionSuffix>rc2</VersionSuffix>
     <Title>LibPropellantEval</Title>
     <Product>LibPropellantEval</Product>
     <Authors>Antoine Lefebvre, Mark Pinese, Ben Voß</Authors>
